@@ -1,322 +1,146 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qono Timer | Tactile Elite</title>
-    <style>
-        :root {
-            --bg: #000;
-            --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.08);
-            --anim-speed: 0.4s; 
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
-        body {
-            background: var(--bg);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* AKIŞ EFEKTİ */
-        .flow-layer {
-            position: absolute;
-            top: 0; left: -150%;
-            width: 300%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 0%, #000 20%, #fff 50%, #000 80%, transparent 100%);
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .active-flow {
-            animation: flowMove 0.18s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            opacity: 1;
-        }
-
-        @keyframes flowMove {
-            0% { left: -150%; transform: skewX(-20deg); }
-            100% { left: 100%; transform: skewX(-20deg); }
-        }
-
-        .timer-card {
-            background: var(--glass);
-            backdrop-filter: blur(50px);
-            border: 1px solid var(--border);
-            padding: 60px 50px;
-            border-radius: 60px;
-            width: 540px;
-            text-align: center;
-            box-shadow: 0 40px 120px rgba(0,0,0,0.9);
-            z-index: 10;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            user-select: none;
-        }
-
-        /* Kart Tıklama Efekti */
-        .timer-card:active { transform: scale(0.98); }
-
-        .brand {
-            font-size: 0.8rem;
-            letter-spacing: 16px;
-            color: #333;
-            margin-bottom: 60px;
-            text-transform: uppercase;
-            font-weight: 200;
-        }
-        .brand b { color: #fff; font-weight: 800; }
-
-        .display-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 50px;
-            height: 110px;
-        }
-
-        .segment {
-            width: 60px;
-            height: 100px;
-            overflow: hidden;
-            position: relative;
-            font-size: 6.5rem;
-            font-weight: 100;
-            line-height: 100px;
-        }
-
-        .segment-inner {
-            display: flex;
-            flex-direction: row;
-            width: 200%;
-            height: 100%;
-            /* Blur kaldırıldı, net yaylanma eklendi */
-            transition: transform var(--anim-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .segment-inner div { 
-            width: 50%; 
-            text-align: center;
-        }
-
-        .separator {
-            font-size: 4rem;
-            font-weight: 100;
-            color: #1a1a1a;
-            margin-bottom: 15px;
-        }
-
-        .input-area {
-            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 150px;
-            opacity: 1;
-        }
-
-        .input-area.hidden {
-            max-height: 0;
-            opacity: 0;
-            transform: translateY(20px);
-            pointer-events: none;
-        }
-
-        .input-group {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-
-        input {
-            width: 85px; height: 65px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            color: #fff;
-            text-align: center;
-            font-size: 1.5rem;
-            transition: 0.3s;
-        }
-
-        input:focus { outline: none; border-color: #fff; background: rgba(255,255,255,0.05); }
-
-        .label { display: block; font-size: 0.6rem; color: #222; margin-top: 12px; letter-spacing: 4px; font-weight: 800; }
-
-        .controls { display: grid; grid-template-columns: 2.2fr 1fr; gap: 20px; }
-
-        button {
-            padding: 24px; border-radius: 28px; border: none; cursor: pointer;
-            font-weight: 900; text-transform: uppercase; letter-spacing: 4px; 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Buton Tıklama Animasyonu */
-        button:active { transform: scale(0.92); }
-
-        .btn-start { background: #fff; color: #000; }
-        .btn-reset { background: transparent; color: #444; border: 1px solid var(--border); }
-        .btn-reset:hover { color: #fff; border-color: #fff; }
-
-        .card-bump { transform: scale(1.04); }
-
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fixing Clock</title>
+<style>
+:root{--ac:255,255,255;--s:min(86vw,340px);--r:calc(var(--s)/2 - 16px);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden}
+body{background:#0e0e10;background:radial-gradient(ellipse at 50% 30%,#222226 0%,#131315 55%,#0b0b0c 100%);color:#f4f4f2;font-family:"Inter","SF Pro Display",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.bg{position:fixed;clip-path:polygon(50% 0,0 100%,100% 100%);background:linear-gradient(160deg,rgba(var(--ac),.1),rgba(var(--ac),.01));pointer-events:none}
+.g1{width:46vmax;height:40vmax;left:-14vmax;top:-10vmax;animation:f1 26s ease-in-out infinite alternate}
+.g2{width:34vmax;height:30vmax;right:-10vmax;bottom:-8vmax;transform:rotate(180deg);animation:f2 32s ease-in-out infinite alternate}
+.g3{width:16vmax;height:14vmax;right:12%;top:12%;opacity:.7;animation:f3 20s ease-in-out infinite alternate}
+@keyframes f1{to{transform:translate(6vmax,4vmax) rotate(14deg)}}
+@keyframes f2{from{transform:rotate(180deg)}to{transform:translate(-5vmax,-4vmax) rotate(212deg)}}
+@keyframes f3{to{transform:translate(-4vmax,6vmax) rotate(-40deg)}}
+/* Ã¼st butonlar */
+.tools{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:14px;display:flex;gap:10px;z-index:5}
+.ib{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);transition:background .2s}
+.ib:active{background:rgba(255,255,255,.14)}
+.ib svg{width:20px;height:20px;fill:none;stroke:#f4f4f2;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* saat */
+.ring{position:relative;width:var(--s);height:var(--s);animation:in 1s cubic-bezier(.2,.9,.2,1) both}
+@keyframes in{from{opacity:0;transform:scale(.88)}}
+.tr{position:absolute;left:50%;top:50%;width:7px;height:11px;margin:-5.5px 0 0 -3.5px;background:rgba(255,255,255,.13);clip-path:polygon(50% 0,0 100%,100% 100%);transition:background .4s}
+.tr.f{width:9px;height:15px;margin:-7.5px 0 0 -4.5px;background:rgba(255,255,255,.25)}
+.tr.on{background:rgba(var(--ac),.85)}
+.tr.cur{background:rgb(var(--ac));filter:drop-shadow(0 0 6px rgb(var(--ac)))}
+.disc{position:absolute;left:11%;top:11%;right:11%;bottom:11%;border-radius:50%;background:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 50px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.2);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.time{display:flex;align-items:center;font-size:calc(var(--s)*.2);font-weight:200;line-height:1;letter-spacing:-.03em}
+.dg{display:inline-block;width:.6em;height:1em;overflow:hidden}
+.dg div{transition:transform .7s cubic-bezier(.2,.9,.2,1)}
+.dg span{display:block;height:1em;line-height:1em;text-align:center}
+.col{width:.28em;text-align:center;opacity:.5;animation:bl 2s ease-in-out infinite;padding-bottom:.1em}
+@keyframes bl{50%{opacity:.1}}
+.sec{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:calc(var(--s)*.055);color:rgba(244,244,242,.7);font-weight:300}
+.sec:before{content:"";width:9px;height:8px;background:rgb(var(--ac));clip-path:polygon(50% 0,0 100%,100% 100%);animation:pu 1s ease-in-out infinite}
+@keyframes pu{50%{opacity:.3}}
+.sec .dg{width:.62em}
+.pbar{display:none;width:100%;height:8px;margin-top:26px;border-radius:8px;background:rgba(255,255,255,.09);overflow:hidden}
+.pbar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,rgba(var(--ac),.35),rgb(var(--ac)));box-shadow:0 0 14px rgba(var(--ac),.5);transform:scaleX(0);transform-origin:left;animation:fillb 60s linear infinite}
+@keyframes fillb{0%{transform:scaleX(0);transform-origin:left}94%{transform:scaleX(1);transform-origin:left}94.1%{transform:scaleX(1);transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+/* Ã§ubuk stili */
+.bm{--s:min(90vw,440px)}
+.bm .tr{display:none}
+.bm .ring{height:auto}
+.bm .time{font-size:calc(var(--s)*.27);font-weight:100}
+.bm .disc{position:static;border-radius:0;background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;align-items:stretch}
+.bm .time,.bm .sec{align-self:center}
+.bm .sec{font-size:18px;margin-top:14px}
+.bm .pbar{display:block}
+.pill{display:flex;align-items:center;gap:12px;padding:12px 22px;border-radius:26px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);animation:in 1.2s .2s cubic-bezier(.2,.9,.2,1) both}
+.pill:before{content:"";width:14px;height:12px;background:rgb(var(--ac));opacity:.8;clip-path:polygon(50% 0,0 100%,100% 100%)}
+.date{font-size:17px}
+.day{font-size:13px;color:rgba(244,244,242,.5);margin-top:2px}
+.brand{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;font-size:10px;letter-spacing:6px;color:rgba(255,255,255,.18)}
+/* ayarlar */
+.ov{position:fixed;left:0;top:0;right:0;bottom:0;z-index:9;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center}
+.ov.show{display:flex}
+.sheet{width:min(100%,460px);padding:22px 22px calc(26px + env(safe-area-inset-bottom,0px));border-radius:30px 30px 0 0;background:rgba(28,28,31,.92);border:1px solid rgba(255,255,255,.12);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);animation:up .4s cubic-bezier(.2,.9,.2,1)}
+@keyframes up{from{transform:translateY(60px);opacity:0}}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-size:19px}
+.sl{font-size:12px;color:rgba(244,244,242,.45);margin:16px 0 10px}
+.opts{display:flex;gap:10px}
+.opt{flex:1;padding:14px 8px;border-radius:16px;font-size:15px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.opt.sel{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.45)}
+.sw{display:flex;gap:12px;flex-wrap:wrap}
+.sw button{width:42px;height:42px;border-radius:50%;border:2px solid transparent;box-shadow:inset 0 0 0 2px rgba(0,0,0,.25)}
+.sw button.sel{border-color:#fff}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
-
-    <div class="flow-layer" id="flow"></div>
-
-    <div class="timer-card" id="card">
-        <div class="brand">QONO <b>TIMER</b></div>
-        
-        <div class="display-container" id="display">
-            <div class="digit-group" style="display:flex;">
-                <div class="segment"><div class="segment-inner" id="h1"><div>0</div><div>0</div></div></div>
-                <div class="segment"><div class="segment-inner" id="h2"><div>0</div><div>0</div></div></div>
-            </div>
-            <div class="separator">:</div>
-            <div class="digit-group" style="display:flex;">
-                <div class="segment"><div class="segment-inner" id="m1"><div>0</div><div>0</div></div></div>
-                <div class="segment"><div class="segment-inner" id="m2"><div>0</div><div>0</div></div></div>
-            </div>
-            <div class="separator">:</div>
-            <div class="digit-group" style="display:flex;">
-                <div class="segment"><div class="segment-inner" id="s1"><div>0</div><div>0</div></div></div>
-                <div class="segment"><div class="segment-inner" id="s2"><div>0</div><div>0</div></div></div>
-            </div>
-        </div>
-
-        <div class="input-area" id="inputArea">
-            <div class="input-group">
-                <div class="input-box"><input type="number" id="inH" placeholder="00"><span class="label">HOUR</span></div>
-                <div class="input-box"><input type="number" id="inM" placeholder="00"><span class="label">MIN</span></div>
-                <div class="input-box"><input type="number" id="inS" placeholder="00"><span class="label">SEC</span></div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <button class="btn-start" id="startBtn">START</button>
-            <button class="btn-reset" id="resetBtn">RESET</button>
-        </div>
-    </div>
-
-    <script>
-        let timer;
-        let timeRemaining = 0;
-        let isRunning = false;
-        let lastStr = "000000";
-        const ANIM_MS = 400;
-
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const flowLayer = document.getElementById('flow');
-        const card = document.getElementById('card');
-        const inputArea = document.getElementById('inputArea');
-
-        function playBeep(startTime) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(1100, startTime);
-            gain.gain.setValueAtTime(0.12, startTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.1);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(startTime);
-            osc.stop(startTime + 0.12);
-
-            const delay = (startTime - audioCtx.currentTime) * 1000;
-            setTimeout(() => {
-                flowLayer.classList.remove('active-flow');
-                void flowLayer.offsetWidth; 
-                flowLayer.classList.add('active-flow');
-                card.classList.add('card-bump');
-                setTimeout(() => card.classList.remove('card-bump'), 150);
-            }, delay);
-        }
-
-        function triggerTripleBeep() {
-            const now = audioCtx.currentTime;
-            for(let i=0; i<3; i++) {
-                const groupStart = now + (i * 0.5);
-                playBeep(groupStart);
-                playBeep(groupStart + 0.1);
-                playBeep(groupStart + 0.2);
-            }
-            setTimeout(() => {
-                inputArea.classList.remove('hidden');
-                document.getElementById('startBtn').textContent = "START";
-            }, 1800);
-        }
-
-        function updateDisplay(seconds) {
-            const h = Math.floor(seconds / 3600);
-            const m = Math.floor((seconds % 3600) / 60);
-            const s = seconds % 60;
-            const currentStr = String(h).padStart(2,'0') + String(m).padStart(2,'0') + String(s).padStart(2,'0');
-            const ids = ['h1', 'h2', 'm1', 'm2', 's1', 's2'];
-            
-            ids.forEach((id, i) => {
-                const el = document.getElementById(id);
-                if (currentStr[i] !== lastStr[i]) {
-                    el.children[1].textContent = currentStr[i];
-                    el.style.transform = 'translateX(-50%)';
-                    
-                    setTimeout(() => {
-                        el.style.transition = 'none';
-                        el.children[0].textContent = currentStr[i];
-                        el.style.transform = 'translateX(0)';
-                        requestAnimationFrame(() => { el.style.transition = ''; });
-                    }, ANIM_MS);
-                }
-            });
-            lastStr = currentStr;
-        }
-
-        document.getElementById('startBtn').onclick = function() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            if (isRunning) {
-                clearInterval(timer);
-                isRunning = false;
-                this.textContent = "RESUME";
-                return;
-            }
-            if (timeRemaining === 0) {
-                const h = parseInt(document.getElementById('inH').value) || 0;
-                const m = parseInt(document.getElementById('inM').value) || 0;
-                const s = parseInt(document.getElementById('inS').value) || 0;
-                timeRemaining = (h * 3600) + (m * 60) + s;
-                if (timeRemaining <= 0) return;
-                updateDisplay(timeRemaining);
-            }
-            isRunning = true;
-            this.textContent = "PAUSE";
-            inputArea.classList.add('hidden'); 
-            timer = setInterval(() => {
-                timeRemaining--;
-                updateDisplay(timeRemaining);
-                if (timeRemaining <= 0) {
-                    clearInterval(timer);
-                    isRunning = false;
-                    triggerTripleBeep();
-                }
-            }, 1000);
-        };
-
-        document.getElementById('resetBtn').onclick = function() {
-            clearInterval(timer);
-            isRunning = false;
-            timeRemaining = 0;
-            updateDisplay(0);
-            document.getElementById('startBtn').textContent = "START";
-            inputArea.classList.remove('hidden'); 
-            document.querySelectorAll('input').forEach(i => i.value = "");
-        };
-    </script>
+<div class="bg g1"></div><div class="bg g2"></div><div class="bg g3"></div>
+<div class="tools">
+ <button class="ib" id="fs" aria-label="Tam ekran"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+ <button class="ib" id="st" aria-label="Ayarlar"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></button>
+</div>
+<div class="ring" id="ring">
+ <div class="disc">
+  <div class="time"><span class="dg" id="h1"></span><span class="dg" id="h2"></span><span class="col">:</span><span class="dg" id="m1"></span><span class="dg" id="m2"></span></div>
+  <div class="sec"><span class="dg" id="s1"></span><span class="dg" id="s2"></span></div>
+  <div class="pbar"><i id="pb"></i></div>
+ </div>
+</div>
+<div class="pill"><div><div class="date" id="d"></div><div class="day" id="g"></div></div></div>
+<div class="brand">fixing</div>
+<div class="ov" id="ov"><div class="sheet">
+ <div class="sh"><span>Ayarlar</span><button class="ib" id="cl" aria-label="Kapat"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+ <div class="sl">Stil</div>
+ <div class="opts"><button class="opt" data-st="tri">ÃœÃ§gen</button><button class="opt" data-st="bar">Ã‡ubuk</button></div>
+ <div class="sl">Renk</div>
+ <div class="sw" id="sw"></div>
+</div></div>
+<script>
+var G=["Pazar","Pazartesi","SalÄ±","Ã‡arÅŸamba","PerÅŸembe","Cuma","Cumartesi"],
+A=["Ocak","Åubat","Mart","Nisan","MayÄ±s","Haziran","Temmuz","AÄŸustos","EylÃ¼l","Ekim","KasÄ±m","AralÄ±k"];
+function $(i){return document.getElementById(i)}
+function p(n){return n<10?"0"+n:""+n}
+var COL=[["255,255,255","#ffffff"],["120,170,255","#78aaff"],["120,230,170","#78e6aa"],["175,140,255","#af8cff"],["255,170,100","#ffaa64"],["255,130,180","#ff82b4"]];
+var cfg={st:"tri",ci:0};
+try{var sv=JSON.parse(localStorage.getItem("fixclk"));if(sv)cfg=sv}catch(e){}
+function save(){try{localStorage.setItem("fixclk",JSON.stringify(cfg))}catch(e){}}
+var ring=$("ring"),tr=[];
+for(var i=0;i<60;i++){var e=document.createElement("i");e.className="tr"+(i%5===0?" f":"");e.style.transform="rotate("+(i*6)+"deg) translateY(calc(var(--r) * -1))";ring.appendChild(e);tr.push(e)}
+var ids=["h1","h2","m1","m2","s1","s2"],stp={};
+for(var k=0;k<6;k++){var h="<div>";for(var j=0;j<10;j++)h+="<span>"+j+"</span>";$(ids[k]).innerHTML=h+"</div>";stp[ids[k]]=$(ids[k]).firstChild}
+function dg(id,v){stp[id].style.transform="translateY(-"+v+"em)"}
+var sw=$("sw");
+for(var c=0;c<COL.length;c++){var b=document.createElement("button");b.style.background=COL[c][1];b.setAttribute("data-c",c);b.setAttribute("aria-label","Renk "+(c+1));sw.appendChild(b)}
+function apply(){
+ document.documentElement.style.setProperty("--ac",COL[cfg.ci][0]);
+ document.body.className=cfg.st==="bar"?"bm":"";
+ var o=document.querySelectorAll(".opt");for(var i=0;i<o.length;i++)o[i].className="opt"+(o[i].getAttribute("data-st")===cfg.st?" sel":"");
+ var s=sw.children;for(var j=0;j<s.length;j++)s[j].className=(j===cfg.ci?"sel":"");
+ var n=new Date(),off="-"+(n.getSeconds()+n.getMilliseconds()/1000)+"s",pb=$("pb");
+ pb.style.animation="none";void pb.offsetWidth;pb.style.animation="";pb.style.animationDelay=off;
+}
+document.addEventListener("click",function(e){
+ var t=e.target;while(t&&t!==document&&!(t.getAttribute&&(t.getAttribute("data-st")||t.getAttribute("data-c")||t.id==="st"||t.id==="cl"||t.id==="fs")))t=t.parentNode;
+ if(e.target.id==="ov"){$("ov").className="ov";return}
+ if(!t||t===document)return;
+ if(t.id==="st")$("ov").className="ov show";
+ else if(t.id==="cl")$("ov").className="ov";
+ else if(t.id==="fs"){var d=document,el=d.documentElement;try{if(d.fullscreenElement||d.webkitFullscreenElement){(d.exitFullscreen||d.webkitExitFullscreen).call(d)}else{(el.requestFullscreen||el.webkitRequestFullscreen).call(el)}}catch(x){}}
+ else if(t.getAttribute("data-st")){cfg.st=t.getAttribute("data-st");save();apply()}
+ else if(t.getAttribute("data-c")){cfg.ci=+t.getAttribute("data-c");save();apply()}
+});
+if(!document.documentElement.requestFullscreen&&!document.documentElement.webkitRequestFullscreen)$("fs").style.display="none";
+function wk(d){return d}
+var ls=-1;
+function tick(){
+ var n=new Date(),s=n.getSeconds();
+ if(s===ls)return;ls=s;
+ var H=p(n.getHours()),M=p(n.getMinutes()),S=p(s);
+ dg("h1",H.charAt(0));dg("h2",H.charAt(1));dg("m1",M.charAt(0));dg("m2",M.charAt(1));dg("s1",S.charAt(0));dg("s2",S.charAt(1));
+ for(var i=0;i<60;i++){var f=i%5===0?" f":"";tr[i].className="tr"+f+(i===s?" cur":(i<s?" on":""))}
+ $("d").innerHTML=n.getDate()+" "+A[n.getMonth()]+" "+n.getFullYear();$("g").innerHTML=G[n.getDay()];
+}
+apply();tick();setInterval(tick,250);
+</script>
 </body>
 </html>
